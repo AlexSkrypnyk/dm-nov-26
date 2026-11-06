@@ -371,17 +371,38 @@
   </div>
 </section>
 
-<!-- 3. Behat in 1 slide -->
+<!-- 3. What Behat is -->
+<section class="slide">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <p class="kicker">New to Behat?</p>
+  <h2>Behat checks your website the way people use it</h2>
+  <p class="lede">Behat is a PHP tool for behaviour-driven development. You describe how your site should behave, in plain English, and Behat checks that it does.</p>
+  <div class="tool-grid">
+    <div class="tool-card"><h3>Plain-text scenarios</h3><p>Developers, testers and clients read the same file.</p></div>
+    <div class="tool-card"><h3>A browser to drive</h3><p>Mink drives a fast HTTP client, or a real browser when the page needs JavaScript.</p></div>
+    <div class="tool-card"><h3>Runs on every change</h3><p>In CI, a broken journey fails the build before it reaches your visitors.</p></div>
+  </div>
+</section>
+
+<!-- 4. Gherkin -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
     <span class="sep"></span><span class="venue">Drupal Meetup</span>
   </div>
   <div class="code-text">
-    <p class="kicker">Behat in 1 slide</p>
-    <h2>Your website's behaviour, in plain English</h2>
-    <p class="lede">Each line is a step. Behat runs a step when there's PHP code behind it.</p>
-    <p class="code-caption">Behat Steps is that code, already written and tested.</p>
+    <p class="kicker">New to Behat?</p>
+    <h2>Gherkin: the language of a scenario</h2>
+    <ul class="lead">
+      <li><code>Feature</code> names what the site does</li>
+      <li><code>Scenario</code> is 1 example of it</li>
+      <li><code>Given</code> sets up, <code>When</code> acts, <code>Then</code> checks</li>
+      <li><code>And</code> continues the line before</li>
+    </ul>
+    <p class="code-caption">Each line under a scenario is a step.</p>
   </div>
   <pre class="code"><span class="k">Feature:</span> News articles
   Editors publish news for visitors.
@@ -394,7 +415,31 @@
     <span class="k">Then</span> I should see the success message <span class="s">"Saved"</span></pre>
 </section>
 
-<!-- 3. Behat Steps today -->
+<!-- 5. Behind every step -->
+<section class="slide code-split code-split-reverse">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <div class="code-text">
+    <p class="kicker">New to Behat?</p>
+    <h2>Behind every step is PHP code</h2>
+    <p class="lede">Behat matches each step to a PHP method by its pattern, then runs the method.</p>
+    <p class="code-caption">Behat Steps is that code, already written and tested.</p>
+  </div>
+  <pre class="code"><span class="c"># The step in your feature file</span>
+<span class="k">When</span> I visit <span class="s">"/"</span>
+
+<span class="c">// The step definition Behat runs for it</span>
+#[When(<span class="s">'I visit :path'</span>)]
+<span class="k">public function</span> pathVisit(string $path): void {
+  $this->getSession()->visit($this->locatePath($path));
+}
+
+<span class="c">// :path captures "/", and Mink opens the page</span></pre>
+</section>
+
+<!-- 6. Behat Steps today -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -410,7 +455,7 @@
   </div>
 </section>
 
-<!-- 4. Divider -->
+<!-- 7. Divider -->
 <section class="slide dark section-divider">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -420,7 +465,7 @@
   <h1>What's new</h1>
 </section>
 
-<!-- 5. Drupal 12 and Behat 4 -->
+<!-- 8. Drupal 12 and Behat 4 -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -436,7 +481,7 @@
   <p>Drupal 12 needs Symfony 8, and Behat 4 is the Behat release that accepts it.</p>
 </section>
 
-<!-- 6. 3 packages become 1 -->
+<!-- 9. 3 packages become 1 -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -458,7 +503,69 @@
                                  backends</pre>
 </section>
 
-<!-- 7. Backends picked by capability -->
+<!-- 10. Inside the package -->
+<section class="slide">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <p class="kicker">Architecture</p>
+  <h2>Inside the package: 4 layers</h2>
+  <p class="lede">Each layer depends only on the layers below it.</p>
+  <div class="layer-list">
+    <div class="layer-row live"><span class="lr-tag">your project</span><div><span class="lr-title">FeatureContext, with your own steps.</span><div class="lr-desc">Extends 1 of the 3 shipped contexts.</div></div></div>
+    <div class="layer-row"><span class="lr-tag">contexts</span><div><span class="lr-title">WebRawContext → WebContext → DrupalContext.</span><div class="lr-desc">Each adds to the one before, and together they reach every layer below.</div></div></div>
+    <div class="layer-row"><span class="lr-tag">src/Steps</span><div><span class="lr-title">What a scenario can say.</span><div class="lr-desc">57 step traits, and the 13 helper traits behind them.</div></div></div>
+    <div class="layer-row"><span class="lr-tag">src/Extension</span><div><span class="lr-title">Plugs the library into Behat and Mink.</span><div class="lr-desc">Reads your <code>behat.php</code> and sets each scenario's backend order.</div></div></div>
+    <div class="layer-row"><span class="lr-tag">src/Backend</span><div><span class="lr-title">Reaches the site: drupal, drush, blackbox.</span><div class="lr-desc">Uses no Behat or Mink code.</div></div></div>
+    <div class="layer-row live"><span class="lr-tag">your site</span><div><span class="lr-title">The website under test.</span></div></div>
+  </div>
+</section>
+
+<!-- 11. Why layers -->
+<section class="slide">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <p class="kicker">Architecture</p>
+  <h2>Why it's built in layers</h2>
+  <div class="tool-grid">
+    <div class="tool-card"><h3>Steps reach the site through a capability</h3><p>So 1 step runs in-process, over Drush or on a backend of your own.</p></div>
+    <div class="tool-card"><h3>Backends know only the site</h3><p>They use no Behat or Mink code, so they work outside a test run too.</p></div>
+    <div class="tool-card"><h3>Web steps sit apart from Drupal steps</h3><p>A site that isn't Drupal extends <code>WebContext</code> and gets only the steps it can use.</p></div>
+  </div>
+  <p class="punchline">A linter fails any code that depends on a layer above it.</p>
+</section>
+
+<!-- 12. What a capability is -->
+<section class="slide code-split">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <div class="code-text">
+    <p class="kicker">Architecture</p>
+    <h2>A capability is 1 job, written as an interface</h2>
+    <p class="lede">Clearing caches, creating content, running cron. A backend provides a job by implementing its interface.</p>
+    <p class="code-caption">35 capabilities: 11 any backend may provide, 24 only a Drupal backend.</p>
+  </div>
+  <pre class="code"><span class="c">// The job</span>
+<span class="k">interface</span> CacheCapabilityInterface {
+  <span class="k">public function</span> cacheClear(): void;
+  <span class="k">public function</span> cacheClearBin(string $bin): void;
+  <span class="c">// and 3 more</span>
+}
+
+<span class="c">// The step asks for the job</span>
+#[Given(<span class="s">'the cache has been cleared'</span>)]
+<span class="k">public function</span> cacheClearAll(): void {
+  $this->backendFor(CacheCapabilityInterface::class)
+    ->cacheClear();
+}</pre>
+</section>
+
+<!-- 13. Backends picked by capability -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -474,7 +581,7 @@
   </div>
 </section>
 
-<!-- 8. Same step, any backend -->
+<!-- 14. Same step, any backend -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -498,7 +605,24 @@
   <span class="k">Then</span> the response status code should be 200</pre>
 </section>
 
-<!-- 9. Consistent language -->
+<!-- 15. Why capabilities -->
+<section class="slide">
+  <div class="slide-footer">
+    <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
+    <span class="sep"></span><span class="venue">Drupal Meetup</span>
+  </div>
+  <p class="kicker">Architecture</p>
+  <h2>Why a step asks for a capability</h2>
+  <p class="lede">Drupal Extension picked 1 driver for a whole scenario, with the <code>@api</code> tag. In 4.0, each step finds a backend for its own job.</p>
+  <ul class="lead">
+    <li>A job the first backend can't do goes to the next one in your list</li>
+    <li>Your own backend serves every shipped step whose capabilities it implements</li>
+    <li>When no backend can do a job, the error names the capability and the order searched</li>
+  </ul>
+  <p class="punchline">Your scenarios describe the site. Your <code>behat.php</code> decides how to reach it.</p>
+</section>
+
+<!-- 16. Consistent language -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -515,7 +639,7 @@
   <p class="punchline">A linter checks 13 of the rules in CI, so every new step follows them too.</p>
 </section>
 
-<!-- 10. Before / after -->
+<!-- 17. Before / after -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -548,7 +672,7 @@ When cron runs</pre>
   <p class="quiet">Many steps keep their text, including Mink's own, such as <code>I fill in</code> and <code>I press</code>.</p>
 </section>
 
-<!-- 11. Your own steps on the helpers -->
+<!-- 18. Your own steps on the helpers -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -576,7 +700,7 @@ When cron runs</pre>
 }</pre>
 </section>
 
-<!-- 12b. The create-behat-step skill -->
+<!-- 19. The create-behat-step skill -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -602,7 +726,7 @@ ln -s ../../vendor/drevops/behat-steps/skills/create-behat-step \
   the page with a title is authored by a user</pre>
 </section>
 
-<!-- 12. API steps -->
+<!-- 20. API steps -->
 <section class="slide code-split code-split-reverse">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -623,7 +747,7 @@ ln -s ../../vendor/drevops/behat-steps/skills/create-behat-step \
   <span class="k">Then</span> the JSON path <span class="s">"$.items"</span> should exist</pre>
 </section>
 
-<!-- 13. Checks -->
+<!-- 21. Checks -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -639,7 +763,7 @@ ln -s ../../vendor/drevops/behat-steps/skills/create-behat-step \
   <p>After each scenario, the entities its steps created are deleted in reverse creation order.</p>
 </section>
 
-<!-- 14. Tested on every change -->
+<!-- 22. Tested on every change -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -654,7 +778,7 @@ ln -s ../../vendor/drevops/behat-steps/skills/create-behat-step \
   <p>Every step has a scenario of its own that tests it.</p>
 </section>
 
-<!-- 16. Why 1 package -->
+<!-- 23. Why 1 package -->
 <section class="slide dark">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -667,7 +791,7 @@ ln -s ../../vendor/drevops/behat-steps/skills/create-behat-step \
   <p class="punchline">1 package to install. 1 release to get a fix.</p>
 </section>
 
-<!-- 17. Moving to 4.0 -->
+<!-- 24. Moving to 4.0 -->
 <section class="slide code-split">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -688,7 +812,7 @@ composer require --dev drevops/behat-steps:^4
 <span class="c"># - drop @api and @drush from your features</span></pre>
 </section>
 
-<!-- 18. Which version -->
+<!-- 25. Which version -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -709,7 +833,7 @@ composer require --dev drevops/behat-steps:^4
   <p>Drupal Extension 6 and Drupal Driver 3 get security fixes until 1 July 2027.</p>
 </section>
 
-<!-- 19. Maintainers wanted -->
+<!-- 26. Maintainers wanted -->
 <section class="slide">
   <div class="slide-footer">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -721,7 +845,7 @@ composer require --dev drevops/behat-steps:^4
   <p class="tool-url">github.com/jhedstrom/drupalextension/issues/882<br>github.com/jhedstrom/DrupalDriver/issues/400</p>
 </section>
 
-<!-- 21. Try it -->
+<!-- 27. Try it -->
 <section class="slide meme-split">
   <div class="slide-footer" style="z-index:10;">
     <span class="deck-logo"><svg viewBox="0 0 5267 1247"><use href="#drevops-logo"/></svg></span>
@@ -737,7 +861,7 @@ composer require --dev drevops/behat-steps:^4
   <img class="meme-img" src="behat_steps_qr.png" alt="QR code linking to behat-steps.drevops.com">
 </section>
 
-<!-- 22. Thanks -->
+<!-- 28. Thanks -->
 <section class="slide dark thanks">
   <h1 class="huge">Thank you</h1>
   <p class="lede">Alex Skrypnyk</p>
