@@ -1,1 +1,1 @@
-# dm-nov-26
+# Drupal Meetup - November 2026
